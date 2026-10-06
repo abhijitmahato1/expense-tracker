@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Expense Tracker</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Authentication -->
+<!-- Authentication -->
+<section class="auth-section">
+
+    <h2 id="auth-title">Welcome Back</h2>
+
+    <p id="auth-mode-text" class="auth-mode-text">
+        Login to manage your transactions securely.
+    </p>
+
+    <input
+        type="email"
+        id="auth-email"
+        placeholder="Email address"
+    >
+
+        <div class="password-wrapper">
+            <input
+                type="password"
+                id="auth-password"
+                placeholder="Password"
+            >
+
+            <button
+                type="button"
+                id="toggle-password"
+                class="toggle-password"
+            >
+                Show
+            </button>
+        </div>
+
+        <p
+            id="password-requirements"
+            class="password-requirements"
+            style="display: none;"
+        >
+            Use at least 8 characters, including an uppercase letter,
+            a number, and a special character.
+        </p>
+
+        <div
+            class="password-wrapper"
+            id="confirm-password-wrapper"
+            style="display: none;"
+        >
+
+            <p
+                id="password-match-message"
+                class="password-match-message"
+                style="display: none;"
+            ></p>
+            <div
+                id="password-strength"
+                class="password-strength"
+                style="display: none;"
+            >
+                <span>Password strength:</span>
+                <strong id="password-strength-text">Weak</strong>
+            </div>
+
+            <input
+                type="password"
+                id="confirm-password"
+                placeholder="Confirm password"
+            >
+
+            
+
+            <button
+                type="button"
+                id="toggle-confirm-password"
+                class="toggle-password"
+            >
+                Show
+            </button>
+        </div>
+
+    </div>
+
+    <div class="auth-buttons">
+
+    <button type="button" id="login-btn">
+        Login
+    </button>
+
+    <button
+        type="button"
+        id="create-account-action"
+        style="display: none;"
+    >
+        Create Account
+    </button>
+
+    </div>
+
+    <button
+        type="button"
+        id="forgot-password-btn"
+        class="forgot-password-btn"
+    >
+        Forgot Password
+    </button>
+        <p id="new-user-section" class="new-user-text">
+            New user
+        <button
+            type="button"
+            id="signup-btn"
+            class="text-link"
+        >
+            Create an account
+        </button>
+
+        <button
+            type="button"
+            id="back-to-login-btn"
+            class="text-link"
+            style="display: none;"
+        >
+            Back to Login
+        </button>
+        </p>
+
+    <p id="auth-message"></p>
+
+    <div
+        id="reset-password-section"
+        style="display: none;"
+    >
+        <h3>Reset Your Password</h3>
+
+        <input
+            type="password"
+            id="new-password"
+            placeholder="New password"
+        >
+
+        <input
+            type="password"
+            id="confirm-new-password"
+            placeholder="Confirm new password"
+        >
+
+        <button
+            type="button"
+            id="update-password-btn"
+        >
+            Update Password
+        </button>
+    </div>
+
+    <div id="user-card" class="user-card" style="display: none;">
+
+        <div class="user-avatar">
+            👤
+            <span class="online-dot"></span>
+        </div>
+
+        <div class="user-info">
+            <span class="user-label">WELCOME BACK 👋</span>
+
+            <strong id="user-email"></strong>
+
+            <span class="cloud-status">
+                <span class="cloud-dot"></span>
+                Cloud Sync Active
+            </span>
+
+            <span class="security-status">
+                🔒 Secure account
+            </span>
+        </div>
+
+    </div>
+
+</section>
+    <div class="container">
+
+        <!-- Header -->
+        <header>
+            <h1>Expense Tracker</h1>
+            <p>Manage your income and expenses easily.</p>
+        </header>
+
+
+        <!-- Balance -->
+        <section class="balance-card">
+
+            <p>Total Balance</p>
+
+            <h2 id="balance">₹0.00</h2>
+
+        </section>
+
+
+        <!-- Summary -->
+        <section class="summary">
+
+            <div class="summary-card income">
+                <p>Total Income</p>
+                <h3 id="income">₹0.00</h3>
+            </div>
+
+            <div class="summary-card expense">
+                <p>Total Expenses</p>
+                <h3 id="expense">₹0.00</h3>
+            </div>
+
+        </section>
+
+        <!-- Transaction Count -->
+        <section class="transaction-count-card">
+
+            <p>Total Transactions</p>
+
+            <h3 id="transaction-count">0</h3>
+
+        </section>
+
+        <!-- Expense Breakdown -->
+<section class="chart-section">
+
+    <h2>Expense Breakdown</h2>
+
+    <p class="chart-description">
+        See where your money is going.
+    </p>
+
+    <div id="expense-chart">
+        <!-- Chart bars will be generated by JavaScript -->
+    </div>
+
+</section>
+
+
+        <!-- Add Transaction -->
+        <section class="form-section">
+
+                <h2 id="form-title">Add Transaction</h2>
+
+                <p id="editing-indicator" class="editing-indicator">
+                    ✏️ You are editing a transaction
+                </p>
+
+                <p id="success-message" class="success-message"></p>
+
+                <form id="transaction-form">
+
+                <div class="form-group">
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <input
+                        type="text"
+                        id="description"
+                        placeholder="e.g. Salary, Food, Travel"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="amount">
+                        Amount
+                    </label>
+
+                    <input
+                        type="number"
+                        id="amount"
+                        placeholder="Enter amount"
+                        min="0.01"
+                        step="0.01"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="type">
+                        Transaction Type
+                    </label>
+
+                    <select id="type" required>
+                        
+                        <option value="" selected disabled>
+                            Select transaction type
+                        </option>
+
+                        <option value="income">
+                            Income
+                        </option>
+
+                        <option value="expense">
+                            Expense
+                        </option>
+
+                    </select>
+
+                </div>
+                <div class="form-group">
+
+        <label for="category">
+            Category
+        </label>
+
+        <select id="category" required>
+
+            <option value="" selected disabled>
+                Select category
+            </option>
+
+            <option value="Salary">
+                Salary
+            </option>
+
+            <option value="Food">
+                Food
+            </option>
+
+            <option value="Travel">
+                Travel
+            </option>
+
+            <option value="Shopping">
+                Shopping
+            </option>
+
+            <option value="Bills">
+                Bills
+            </option>
+
+            <option value="Education">
+                Education
+            </option>
+
+            <option value="Other">
+                Other
+            </option>
+
+        </select>
+
+            <input
+            type="text"
+            id="custom-category"
+            placeholder="Enter your category"
+            style="display: none; margin-top: 10px;"
+            >
+
+    </div>
+    <div class="form-group">
+
+        <label for="date">
+            Date
+        </label>
+
+        <input
+            type="date"
+            id="date"
+            required
+        >
+
+    </div>
+
+
+
+        <div class="form-buttons">
+
+            <button type="submit" id="submit-btn">
+                Add Transaction
+            </button>
+
+            <button
+                type="button"
+                id="cancel-edit"
+                class="cancel-edit-btn"
+                style="display: none;"
+                >
+                ✕ Cancel Edit
+            </button>
+
+        </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- Transactions -->
+        <section class="transactions-section">
+
+    <h2>Transactions</h2>
+
+
+    <!-- Search and Filters -->
+
+<div class="filters">
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="search"
+            placeholder="Search transactions..."
+        >
+
+        <button
+            type="button"
+            id="clear-search"
+            class="clear-search"
+            title="Clear search"
+        >
+            ✕
+        </button>
+
+    </div>
+
+
+    <select id="filter-type">
+
+        <option value="all">
+            All Types
+        </option>
+
+        <option value="income">
+            Income
+        </option>
+
+        <option value="expense">
+            Expense
+        </option>
+
+    </select>
+
+
+    <select id="filter-category">
+
+        <option value="all">
+            All Categories
+        </option>
+
+        <option value="Salary">
+            Salary
+        </option>
+
+        <option value="Food">
+            Food
+        </option>
+
+        <option value="Travel">
+            Travel
+        </option>
+
+        <option value="Shopping">
+            Shopping
+        </option>
+
+        <option value="Bills">
+            Bills
+        </option>
+
+        <option value="Education">
+            Education
+        </option>
+
+        <option value="Other">
+            Other
+        </option>
+
+    </select>
+
+
+    <button
+        type="button"
+        id="reset-filters"
+        class="reset-btn"
+    >
+        ↻ Reset
+    </button>
+
+</div>
+
+        <ul id="transaction-list"></ul>
+        <button id="clear-all-btn" class="clear-all-btn">
+            🗑️ Clear All Transactions
+        </button>
+
+        </section>
+
+    </div>
+
+            <div class="logout-section">
+            <button
+                type="button"
+                id="logout-btn"
+                style="display: none;"
+            >
+                Logout
+            </button>
+        </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="script.js"></script>
+
+
+
+</body>
+</html>
